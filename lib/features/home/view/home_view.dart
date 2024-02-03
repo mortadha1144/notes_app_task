@@ -1,38 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:notes_app_task/features/home/providers/notes_provider.dart';
+import 'package:notes_app_task/features/home/view/widgets/note_dialog.dart';
+import 'package:notes_app_task/features/home/view/widgets/notes_list.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Notes App'),
+          centerTitle: true,
         ),
-        body: const Center(
-          child: Text(
-            'Welcome to the Notes App!',
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
+        body: const NotesList(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(context: context, builder: (context) {
-              return AlertDialog(
-                title: const Text('Add Note'),
-                content: const Text('You have clicked the button'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Close'),
-                  )
-                ],
-              );
-            },);
+          onPressed: () async {
+            final note = await createOrUpdateNoteDialog(context);
+            if (note != null) {
+              ref.read(notesProvider.notifier).addNote(note);
+            }
           },
-          tooltip: 'Increment',
           child: const Icon(Icons.add),
         ));
   }
