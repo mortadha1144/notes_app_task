@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:notes_app_task/features/home/data/models/note.dart';
 
-// best practice to use an AutoDisposeNotifierProvider
+// best practice to use [AutoDisposeNotifierProvider]
 // because it will automatically dispose the state when
 // the widget is removed from the widget tree
 
